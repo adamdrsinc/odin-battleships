@@ -1,0 +1,32 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    --extremities-color: rgb(66, 117, 65);
+}
+
+header,
+footer{
+    background-color: var(--extremities-color);
+}
+
+header{
+    min-height: 10vh;
+}
+
+#main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+footer{
+    min-height: 15vh;
+}
