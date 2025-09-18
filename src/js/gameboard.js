@@ -15,18 +15,11 @@ export default class Gameboard {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    constructor() {
-        const ships = [
-            new Ship(5),
-            new Ship(4),
-            new Ship(3),
-            new Ship(3),
-            new Ship(2),
-        ];
+    #ships = [new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2)];
 
-        for (const ship of ships) {
+    constructor() {
+        for (const ship of this.#ships) {
             this.#attemptToAddShip(ship);
-            console.log(this.#board);
         }
     }
 
@@ -107,12 +100,16 @@ export default class Gameboard {
         }
     }
 
-    addMiss(coords) {
+    addShot(coords) {
         this.setBoardLocation(coords, 1);
     }
 
     get board() {
         return this.#board;
+    }
+
+    get ships() {
+        return this.#ships;
     }
 
     getBoardLocation(coords) {
