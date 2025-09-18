@@ -33,3 +33,25 @@ test("addShip of length 3 to coords [3,4], is vertical", () => {
     expect(gameboard.getBoardLocation({ x: 3, y: 5 })).toBe(shipLength3);
     expect(gameboard.getBoardLocation({ x: 3, y: 6 })).toBe(shipLength3);
 });
+
+test("isValidLocation returns true when coordinate return is 0", () => {
+    const gameboard = new Gameboard();
+
+    expect(gameboard.isValidLocation({ x: 3, y: 6 })).toBe(true);
+});
+
+test("isValidLocation returns false when coordinate return is 1", () => {
+    const gameboard = new Gameboard();
+    gameboard.addMiss({ x: 1, y: 1 });
+
+    expect(gameboard.isValidLocation({ x: 1, y: 1 })).toBe(false);
+});
+
+test("isValidLocation returns false when coordinate returns a ship", () => {
+    const shipLength3 = new Ship(3);
+    const gameboard = new Gameboard();
+
+    gameboard.addShip(shipLength3, true, { x: 3, y: 4 });
+
+    expect(gameboard.isValidLocation({ x: 3, y: 4 })).toBe(false);
+});

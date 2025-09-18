@@ -1,3 +1,6 @@
+import { coinFlip, getRandomInt } from "./math-support.js";
+import Ship from "./ship.js";
+
 export default class Gameboard {
     #board = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -12,7 +15,19 @@ export default class Gameboard {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    constructor() {}
+    constructor() {
+        const ships = [
+            new Ship(5),
+            new Ship(4),
+            new Ship(3),
+            new Ship(3),
+            new Ship(2),
+        ];
+
+        for (const ship of ships) {
+            this.#attemptToAddShip(ship);
+        }
+    }
 
     //Ship: 5
     //Ship: 4
@@ -20,16 +35,80 @@ export default class Gameboard {
     //Ship: 3
     //Ship: 2
 
+    #attemptToAddShip(ship) {
+        let isVertical;
+        let goodLocationFound = false;
+        let randomXAxisLocation;
+        let randomYAxisLocation;
+
+        while (!goodLocationFound) {
+            let valid = false;
+            isVertical = !!coinFlip();
+            randomXAxisLocation =
+                isVertical === false
+                    ? getRandomInt(this.board.length - ship.length)
+                    : getRandomInt(this.board.length);
+            randomYAxisLocation = isVertical
+                ? getRandomInt(this.board.length - ship.length)
+                : getRandomInt(this.board.length);
+
+            if (isVertical) {
+                for (let i = 0; i < ship.length; i++) {
+                    if (
+                        !this.isValidLocation({
+                            y: randomYAxisLocation + i,
+                            x: randomXAxisLocation,
+                        })
+                    ) {
+                        break;
+                    } else if (i === ship.length - 1) {
+                        // Reached end of for loop
+                        goodLocationFound = true;
+                    }
+                }
+            } else {
+                for (let i = 0; i < ship.length; i++) {
+                    if (
+                        !this.isValidLocation({
+                            y: randomYAxisLocation,
+                            x: randomXAxisLocation + i,
+                        })
+                    ) {
+                        break;
+                    } else if (i === ship.length - 1) {
+                        // Reached end of for loop
+                        goodLocationFound = true;
+                    }
+                }
+            }
+        }
+
+        this.addShip(ship, isVertical, {
+            x: randomXAxisLocation,
+            y: randomYAxisLocation,
+        });
+    }
+
     addShip(ship, vertical, startLocation) {
         const shipLength = ship.length;
 
         for (let i = 0; i < shipLength; i++) {
             if (vertical) {
-                this.#board[startLocation.y + i][startLocation.x] = ship;
+                this.setBoardLocation(
+                    { y: startLocation.y + i, x: startLocation.x },
+                    ship
+                );
             } else {
-                this.#board[startLocation.y][startLocation.x + i] = ship;
+                this.setBoardLocation(
+                    { y: startLocation.y, x: startLocation.x + i },
+                    ship
+                );
             }
         }
+    }
+
+    addMiss(coords) {
+        this.setBoardLocation(coords, 1);
     }
 
     get board() {
@@ -40,4 +119,11 @@ export default class Gameboard {
         return this.board[coords.y][coords.x];
     }
 
+    setBoardLocation(coords, val) {
+        this.board[coords.y][coords.x] = val;
+    }
+
+    isValidLocation(coords) {
+        return this.getBoardLocation(coords) === 0;
+    }
 }
