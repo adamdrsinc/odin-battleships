@@ -1,11 +1,21 @@
 import "./css/style.css";
 import { GameHandler } from "./js/game-handler";
-import { Player } from "./js/player";
+import { PubSubMessage } from "./js/pubsub-messages";
 import { UIHandler } from "./js/ui-handler";
 
 function main() {
     UIHandler.init();
-    const gameHandler = new GameHandler();
+    GameHandler.init();
+
+    PubSub.subscribe(PubSubMessage.PLAY_AGAIN, (message, data) => {
+        console.log("doing");
+        UIHandler.init();
+        GameHandler.init();
+
+        document
+            .getElementById("person-wins-container")
+            .classList.toggle("visible");
+    });
 }
 
 main();

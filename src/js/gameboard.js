@@ -23,12 +23,6 @@ export default class Gameboard {
         }
     }
 
-    //Ship: 5
-    //Ship: 4
-    //Ship: 4
-    //Ship: 3
-    //Ship: 2
-
     #attemptToAddShip(ship) {
         let isVertical;
         let goodLocationFound = false;

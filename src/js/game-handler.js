@@ -3,26 +3,26 @@ import { Player } from "./player";
 import { PubSubMessage } from "./pubsub-messages";
 
 export class GameHandler {
-    #player1 = new Player("Player");
-    #player2 = new Player("Computer");
+    static #player1 = new Player("Player");
+    static #player2 = new Player("Computer");
 
-    constructor() {
+    static init() {
         this.#addSubscribers();
     }
 
-    get player() {
+    static get player() {
         return this.#player1;
     }
 
-    get computer() {
+    static get computer() {
         return this.#player2;
     }
 
-    get players() {
+    static get players() {
         return [this.#player1, this.#player2];
     }
 
-    #addSubscribers() {
+    static #addSubscribers() {
         PubSub.subscribe(PubSubMessage.TILE_CLICKED, (message, data) => {
             const x = data.x;
             const y = data.y;
@@ -43,7 +43,7 @@ export class GameHandler {
         });
     }
 
-    #computerTurn() {
+    static #computerTurn() {
         let goodTurn = false;
         while (!goodTurn) {
             const coords = {
@@ -64,7 +64,7 @@ export class GameHandler {
         }
     }
 
-    #publishTileColorChange(potentialShip, x, y, playerName) {
+    static #publishTileColorChange(potentialShip, x, y, playerName) {
         if (potentialShip === 0) {
             // "Water"
             PubSub.publish(PubSubMessage.TILE_CLICKED_COLOR_CHANGE, {
@@ -88,14 +88,27 @@ export class GameHandler {
         }
     }
 
-    #checkGameWin() {
+    static #checkGameWin() {
         const allComputerShipsDead = this.#shipsDead(this.computer.board.ships);
-        
+        if (allComputerShipsDead) {
+            this.#displayWin("Player");
+            return;
+        }
 
         const allPlayerShipsDead = this.#shipsDead(this.player.board.ships);
+        if (allPlayerShipsDead) {
+            this.#displayWin("Computer");
+        }
     }
 
-    #shipsDead(ships) {
+    static #displayWin(playerName) {
+        document.getElementById("player-win-name").innerText = playerName;
+        document
+            .getElementById("person-wins-container")
+            .classList.toggle("visible");
+    }
+
+    static #shipsDead(ships) {
         for (const ship of ships) {
             if (!ship.isSunk()) return false;
         }

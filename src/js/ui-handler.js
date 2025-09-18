@@ -5,14 +5,10 @@ export class UIHandler {
     static init() {
         this.#populateBoards();
         this.#addSubscribers();
+        this.#addEventListeners();
     }
 
     static #populateBoards() {
-        // const playerBoard =
-        //     document.getElementsByClassName("game-grid player")[0];
-        // const computerBoard =
-        //     document.getElementsByClassName("game-grid computer")[0];
-
         const playerBoard = document.querySelector(
             `[data-player-name="Player"]`
         );
@@ -70,6 +66,15 @@ export class UIHandler {
                 this.#changeTileColor(playerName, hitStatus, { x, y });
             }
         );
+    }
+
+    static #addEventListeners() {
+        const button = document.getElementById("button-play-again");
+        button.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            PubSub.publish(PubSubMessage.PLAY_AGAIN, {});
+        });
     }
 
     static #changeTileColor(playerName, hitStatus, coords) {
