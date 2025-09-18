@@ -1,5 +1,5 @@
 export function coinFlip() {
-    return Math.floor(Math.random() * 2);
+    return Math.random() < 0.5;
 }
 
 export function getRandomInt(max) {

@@ -26,6 +26,7 @@ export default class Gameboard {
 
         for (const ship of ships) {
             this.#attemptToAddShip(ship);
+            console.log(this.#board);
         }
     }
 
@@ -42,7 +43,6 @@ export default class Gameboard {
         let randomYAxisLocation;
 
         while (!goodLocationFound) {
-            let valid = false;
             isVertical = !!coinFlip();
             randomXAxisLocation =
                 isVertical === false

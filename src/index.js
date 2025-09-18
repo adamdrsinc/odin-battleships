@@ -1,11 +1,12 @@
 import "./css/style.css";
 import { Player } from "./js/player";
+import { UIHandler } from "./js/ui-handler";
 
-function gameLoop() {
+function main() {
     const player = new Player("Player");
     const computer = new Player("Computer");
 
-    
+    UIHandler.init();
 }
 
-gameLoop();
+main();
