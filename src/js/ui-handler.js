@@ -16,8 +16,8 @@ export class UIHandler {
             `[data-player-name="Computer"]`
         );
 
-        this.#populateBoard(playerBoard, false);
-        this.#populateBoard(computerBoard, true);
+        this.#populateBoard(playerBoard);
+        this.#populateBoard(computerBoard);
     }
 
     static #populateBoard(personGameGrid, canClickBoard) {
@@ -30,10 +30,6 @@ export class UIHandler {
             newTile.innerHTML = `&nbsp;`;
             newTile.setAttribute("data-x", xCoord);
             newTile.setAttribute("data-y", yCoord);
-
-            if (canClickBoard) {
-                newTile.addEventListener("click", this.#tileClicked);
-            }
 
             personGameGrid.appendChild(newTile);
         }
@@ -75,6 +71,14 @@ export class UIHandler {
 
             PubSub.publish(PubSubMessage.PLAY_AGAIN, {});
         });
+
+        const computerGameGrid = document.querySelector(
+            `[data-player-name="Computer"]`
+        );
+        const computerTiles = computerGameGrid.childNodes;
+        for (const tile of computerTiles) {
+            tile.addEventListener("click", this.#tileClicked);
+        }
     }
 
     static #changeTileColor(playerName, hitStatus, coords) {

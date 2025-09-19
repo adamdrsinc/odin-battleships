@@ -35,6 +35,9 @@ footer{
     width: 100%;
     max-width: 1200px;
     height: 100%;
+
+    --overlay-color: rgba(0,0,0,0.7);
+    --game-grid-length: 40vh;
 }
 
 #games-container{
@@ -56,7 +59,8 @@ footer{
     margin-bottom: 16px;
 }
 
-.game-grid{
+.game-grid
+,#selection-grid{
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
@@ -64,8 +68,8 @@ footer{
     border: 2px solid black;
     outline: 4px solid gray;
 
-    height: 40vh;
-    width: 40vh;
+    height: var(--game-grid-length);
+    width: var(--game-grid-length);
 }
 
 .tile{
@@ -85,7 +89,7 @@ footer{
 }
 
 #person-wins-container{
-    background-color: rgba(0,0,0,0.7);
+    background-color: var(--overlay-color);
     position: fixed;
     width: 100%;
     height: 100%;
@@ -139,4 +143,89 @@ footer{
 
 #win-box button:hover{
     background-color: rgb(188, 188, 243)
+}
+
+.overlay{
+        position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+    background-color: var(--overlay-color);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#player-grid-selection-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    border: 4px solid black;
+    border-radius: 12px;
+
+    font-size: 1.5rem;
+}
+
+#player-grid-selection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: calc(var(--game-grid-length) + 5vw);
+    height: calc(var(--game-grid-length) + 10vh);
+}
+
+
+#player-grid-selection h2,
+#ship-selection h2{
+    margin-bottom: 16px;
+}
+
+#ship-selection{
+    height: calc(var(--game-grid-length) + 10vh);
+    width: 20vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding-left: 3vw;
+}
+
+#ships-container{
+    height: var(--game-grid-length);
+    width: 100%;
+
+    border: 2px solid black;
+    outline: 4px solid gray;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 1fr);
+}
+
+.ship{
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+}
+
+.ship:hover{
+    background-color: lightblue;
+}
+
+
+.ship-dot{
+    border: 1px solid black;
 }
