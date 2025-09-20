@@ -4,8 +4,8 @@ import { PubSubMessage } from "./pubsub-messages";
 import Ship from "./ship.js";
 
 export class GameHandler {
-    static #player1 = new Player("Player");
-    static #player2 = new Player("Computer");
+    static #player = new Player("Player", false);
+    static #computer = new Player("Computer", true);
     static #shipsToPlace = [
         new Ship(5),
         new Ship(4),
@@ -18,23 +18,25 @@ export class GameHandler {
         this.#addSubscribers();
     }
 
+    static reset() {
+        document
+            .getElementById("person-wins-container")
+            .classList.toggle("visible");
+    }
+
     static get player() {
-        return this.#player1;
+        return this.#player;
     }
 
     static get computer() {
-        return this.#player2;
+        return this.#computer;
     }
 
     static get players() {
-        return [this.#player1, this.#player2];
+        return [this.#player, this.#computer];
     }
 
-    static get shipsToPlace() {
-        return this.#shipsToPlace;
-    }
-
-    static removeShipToPlace() {
+    static #removeShipToPlace() {
         if (this.#shipsToPlace.length > 0) {
             this.#shipsToPlace.shift();
         }
@@ -59,6 +61,95 @@ export class GameHandler {
 
             if (playerName === "Computer") this.#computerTurn();
         });
+
+        PubSub.subscribe(PubSubMessage.START_TILE_CLICKED, (message, data) => {
+            const startingBoard = document.getElementById("selection-grid");
+
+            if (this.#shipsToPlace.length > 0) {
+                const ship = this.#shipsToPlace[0];
+                const isVertical =
+                    document.getElementById("vertical-checkbox").checked;
+
+                //TODO: Check for good placement: checkPlacement();
+
+                //Set tile colours to be green
+                if (isVertical) {
+                    for (let i = 0; i < ship.length; i++) {
+                        startingBoard
+                            .querySelector(
+                                `[data-x="${data.x}"][data-y="${data.y + i}"]`
+                            )
+                            .classList.add("set-color");
+                    }
+                } else {
+                    for (let i = 0; i < ship.length; i++) {
+                        startingBoard
+                            .querySelector(
+                                `[data-x="${data.x + i}"][data-y="${data.y}"]`
+                            )
+                            .classList.add("set-color");
+                    }
+                }
+
+                //Set tile on gameboard
+                this.#player.board.addShipToBoard(ship, isVertical, {
+                    x: data.x,
+                    y: data.y,
+                });
+
+                //Add to list of ships
+                this.#player.board.addShip(ship);
+
+                //Remove ship
+                this.#removeShipToPlace();
+
+                //TODO: move to UI-Handler
+                const allNotDone = document.querySelectorAll(`[done="false"]`);
+
+                allNotDone[0].setAttribute("done", "true");
+                allNotDone[0].classList.add("done");
+            }
+        });
+
+        PubSub.subscribe(
+            PubSubMessage.START_TILE_MOUSE_OVER,
+            (message, data) => {
+                if (this.#shipsToPlace.length !== 0) {
+                    const ship = GameHandler.#shipsToPlace[0];
+                    const startingBoard =
+                        document.getElementById("selection-grid");
+
+                    const highlightedTiles =
+                        startingBoard.getElementsByClassName("starting-hover");
+                    while (highlightedTiles.length > 0) {
+                        highlightedTiles[0].classList.remove("starting-hover");
+                    }
+
+                    if (data.isVertical) {
+                        for (let i = 0; i < ship.length; i++) {
+                            const tempTile = startingBoard.querySelector(
+                                `[data-x="${data.x}"][data-y="${data.y + i}"]`
+                            );
+
+                            if (tempTile) {
+                                tempTile.classList.add("starting-hover");
+                            }
+                        }
+                    } else {
+                        //Horizontal
+                        for (let i = 0; i < ship.length; i++) {
+                            const tempTile = startingBoard.querySelector(
+                                `[data-x="${data.x + i}"][data-y="${data.y}"]`
+                            );
+
+                            if (tempTile) {
+                                tempTile.classList.add("starting-hover");
+                            }
+                        }
+                    }
+                }
+            }
+        );
     }
 
     static #computerTurn() {

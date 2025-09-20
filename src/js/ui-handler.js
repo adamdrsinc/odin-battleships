@@ -1,12 +1,27 @@
 import PubSub from "pubsub-js";
 import { PubSubMessage } from "./pubsub-messages";
-import { GameHandler } from "./game-handler";
 
 export class UIHandler {
     static init() {
         this.#populateBoards();
         this.#addSubscribers();
         this.#addEventListeners();
+    }
+
+    static reset() {
+        const playerBoard = document.querySelector(
+            `[data-player-name="Player"]`
+        );
+        const computerBoard = document.querySelector(
+            `[data-player-name="Computer"]`
+        );
+        const startingBoard = document.getElementById("selection-grid");
+
+        playerBoard.innerHTML = "";
+        computerBoard.innerHTML = "";
+        startingBoard.innerHTML = "";
+
+        document.querySelector(".overlay").classList.remove("invisible");
     }
 
     static #populateBoards() {
@@ -27,54 +42,35 @@ export class UIHandler {
 
     static #addStartingBoardMouseOvers(startingBoard) {
         const children = startingBoard.childNodes;
-        const hoveredOverTiles = [];
 
         for (const tile of children) {
-            tile.addEventListener("mouseenter", (e) => {
-                const tile = e.target;
-                const x = parseInt(tile.getAttribute("data-x"));
-                const y = parseInt(tile.getAttribute("data-y"));
-                const isVertical =
-                    document.getElementById("vertical-checkbox").checked;
-
-                if (GameHandler.shipsToPlace.length !== 0) {
-                    const ship = GameHandler.shipsToPlace[0];
-                    const shipLength = ship.length;
-
-                    if (isVertical) {
-                        for (let i = 0; i < shipLength; i++) {
-                            const tempTile = startingBoard.querySelector(
-                                `[data-x="${x}"][data-y="${y + i}"]`
-                            );
-
-                            if (tempTile) {
-                                tempTile.classList.add("starting-hover");
-                                hoveredOverTiles.push(tempTile);
-                            }
-                        }
-                    } else {
-                        //Horizontal
-                        for (let i = 0; i < shipLength; i++) {
-                            const tempTile = startingBoard.querySelector(
-                                `[data-x="${x + i}"][data-y="${y}"]`
-                            );
-
-                            if (tempTile) {
-                                tempTile.classList.add("starting-hover");
-                                hoveredOverTiles.push(tempTile);
-                            }
-                        }
-                    }
-                }
-            });
-
-            tile.addEventListener("mouseleave", (e) => {
-                while (hoveredOverTiles.length > 0) {
-                    hoveredOverTiles[0].classList.toggle("starting-hover");
-                    hoveredOverTiles.shift();
-                }
-            });
+            tile.addEventListener("mouseenter", this.#startingTileMouseEnter);
+            tile.addEventListener("click", this.#startingTileClick);
         }
+    }
+
+    static #startingTileMouseEnter(e) {
+        const tile = e.target;
+        const x = parseInt(tile.getAttribute("data-x"));
+        const y = parseInt(tile.getAttribute("data-y"));
+        const isVertical = document.getElementById("vertical-checkbox").checked;
+
+        PubSub.publish(PubSubMessage.START_TILE_MOUSE_OVER, {
+            x: parseInt(tile.getAttribute("data-x")),
+            y: parseInt(tile.getAttribute("data-y")),
+            isVertical: isVertical,
+        });
+    }
+
+    static #startingTileClick(e) {
+        const tile = e.target;
+        const isVertical = document.getElementById("vertical-checkbox").checked;
+
+        PubSub.publish(PubSubMessage.START_TILE_CLICKED, {
+            x: parseInt(tile.getAttribute("data-x")),
+            y: parseInt(tile.getAttribute("data-y")),
+            isVertical,
+        });
     }
 
     static #populateBoard(personGameGrid) {
@@ -123,7 +119,7 @@ export class UIHandler {
 
     static #addEventListeners() {
         const button = document.getElementById("button-play-again");
-        button.addEventListener("submit", (event) => {
+        button.addEventListener("click", (event) => {
             event.preventDefault();
 
             PubSub.publish(PubSubMessage.PLAY_AGAIN, {});
@@ -132,10 +128,31 @@ export class UIHandler {
         const computerGameGrid = document.querySelector(
             `[data-player-name="Computer"]`
         );
+
         const computerTiles = computerGameGrid.childNodes;
         for (const tile of computerTiles) {
             tile.addEventListener("click", this.#tileClicked);
         }
+
+        const startGameButton = document.getElementById("start-game-button");
+        startGameButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            const startingGrid = document.getElementById("selection-grid");
+            const children = startingGrid.children;
+
+            for (const tile of children) {
+                tile.removeEventListener("click", this.#startingTileClick);
+                tile.removeEventListener(
+                    "mouseenter",
+                    this.#startingTileMouseEnter
+                );
+            }
+
+            document.querySelector(`[data-player-name="Player"]`).innerHTML =
+                startingGrid.innerHTML;
+
+            document.querySelector(".overlay").classList.add("invisible");
+        });
     }
 
     static #changeTileColor(playerName, hitStatus, coords) {

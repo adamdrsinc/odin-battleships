@@ -7,16 +7,11 @@ function main() {
     UIHandler.init();
     GameHandler.init();
 
-    
-
     PubSub.subscribe(PubSubMessage.PLAY_AGAIN, (message, data) => {
-        console.log("doing");
-        UIHandler.init();
-        GameHandler.init();
+        GameHandler.reset();
+        UIHandler.reset();
 
-        document
-            .getElementById("person-wins-container")
-            .classList.toggle("visible");
+        UIHandler.init();
     });
 }
 

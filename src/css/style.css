@@ -70,6 +70,9 @@ footer{
 
     height: var(--game-grid-length);
     width: var(--game-grid-length);
+
+    gap: 1px;
+    padding: 1px;
 }
 
 .tile{
@@ -85,15 +88,19 @@ footer{
 }
 
 .tile.miss{
-    background-color: gray;
+    background-color: lightblue;
 }
 
 .tile.starting-hover{
     background-color: lightgreen;
 }
 
-.tile.starting-hover-false:hover{
-    background-color: darkred;
+.tile.set-color{
+    background-color: darkgreen;
+}
+
+.tile.set-color.hit{
+    background-color: red;
 }
 
 #person-wins-container{
@@ -154,7 +161,7 @@ footer{
 }
 
 .overlay{
-        position: fixed;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -170,9 +177,14 @@ footer{
     justify-content: center;
 }
 
+.overlay.invisible{
+    display: none;
+}
+
 #player-grid-selection-container{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-items: center;
     align-items: center;
 
     background-color: white;
@@ -180,6 +192,10 @@ footer{
     border-radius: 12px;
 
     font-size: 1.5rem;
+}
+
+#player-grid-selection-top{
+    display: flex;
 }
 
 #player-grid-selection{
@@ -190,6 +206,21 @@ footer{
 
     width: calc(var(--game-grid-length) + 5vw);
     height: calc(var(--game-grid-length) + 10vh);
+}
+
+#start-game-button{
+    font-size: 1.5rem;
+    padding: 8px 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: lightgreen;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#start-game-button:hover{
+    background-color: darkgreen;
+    color: white;
 }
 
 
@@ -232,6 +263,10 @@ footer{
     justify-items: center;
     align-items: center;
     grid-template-columns: repeat(5, 1fr);
+}
+
+.ship.done{
+    background-color: lightgreen;
 }
 
 

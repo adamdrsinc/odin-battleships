@@ -27,12 +27,12 @@ export default class Gameboard {
                 new Ship(2),
             ];
             for (const ship of this.#ships) {
-                this.#attemptToAddShip(ship);
+                this.#attemptToAddRandomShip(ship);
             }
-        } 
+        }
     }
 
-    #attemptToAddShip(ship) {
+    #attemptToAddRandomShip(ship) {
         let isVertical;
         let goodLocationFound = false;
         let randomXAxisLocation;
@@ -79,13 +79,13 @@ export default class Gameboard {
             }
         }
 
-        this.addShip(ship, isVertical, {
+        this.addShipToBoard(ship, isVertical, {
             x: randomXAxisLocation,
             y: randomYAxisLocation,
         });
     }
 
-    addShip(ship, vertical, startLocation) {
+    addShipToBoard(ship, vertical, startLocation) {
         const shipLength = ship.length;
 
         for (let i = 0; i < shipLength; i++) {
@@ -101,6 +101,10 @@ export default class Gameboard {
                 );
             }
         }
+    }
+
+    addShip(ship) {
+        this.#ships.push(ship);
     }
 
     addShot(coords) {

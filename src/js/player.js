@@ -6,9 +6,9 @@ export class Player {
     #board;
     #name;
 
-    constructor(name) {
+    constructor(name, setupBoard) {
         this.#name = name;
-        this.#board = new Gameboard();
+        this.#board = new Gameboard(setupBoard);
     }
 
     get name() {
