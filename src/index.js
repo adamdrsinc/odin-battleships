@@ -7,6 +7,8 @@ function main() {
     UIHandler.init();
     GameHandler.init();
 
+    
+
     PubSub.subscribe(PubSubMessage.PLAY_AGAIN, (message, data) => {
         console.log("doing");
         UIHandler.init();

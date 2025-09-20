@@ -1,10 +1,18 @@
 import * as MathSupport from "./math-support.js";
 import { Player } from "./player";
 import { PubSubMessage } from "./pubsub-messages";
+import Ship from "./ship.js";
 
 export class GameHandler {
     static #player1 = new Player("Player");
     static #player2 = new Player("Computer");
+    static #shipsToPlace = [
+        new Ship(5),
+        new Ship(4),
+        new Ship(3),
+        new Ship(3),
+        new Ship(2),
+    ];
 
     static init() {
         this.#addSubscribers();
@@ -20,6 +28,16 @@ export class GameHandler {
 
     static get players() {
         return [this.#player1, this.#player2];
+    }
+
+    static get shipsToPlace() {
+        return this.#shipsToPlace;
+    }
+
+    static removeShipToPlace() {
+        if (this.#shipsToPlace.length > 0) {
+            this.#shipsToPlace.shift();
+        }
     }
 
     static #addSubscribers() {

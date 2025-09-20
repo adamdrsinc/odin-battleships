@@ -1,5 +1,6 @@
 import PubSub from "pubsub-js";
 import { PubSubMessage } from "./pubsub-messages";
+import { GameHandler } from "./game-handler";
 
 export class UIHandler {
     static init() {
@@ -15,12 +16,68 @@ export class UIHandler {
         const computerBoard = document.querySelector(
             `[data-player-name="Computer"]`
         );
+        const startingBoard = document.getElementById("selection-grid");
 
         this.#populateBoard(playerBoard);
         this.#populateBoard(computerBoard);
+
+        this.#populateBoard(startingBoard);
+        this.#addStartingBoardMouseOvers(startingBoard);
     }
 
-    static #populateBoard(personGameGrid, canClickBoard) {
+    static #addStartingBoardMouseOvers(startingBoard) {
+        const children = startingBoard.childNodes;
+        const hoveredOverTiles = [];
+
+        for (const tile of children) {
+            tile.addEventListener("mouseenter", (e) => {
+                const tile = e.target;
+                const x = parseInt(tile.getAttribute("data-x"));
+                const y = parseInt(tile.getAttribute("data-y"));
+                const isVertical =
+                    document.getElementById("vertical-checkbox").checked;
+
+                if (GameHandler.shipsToPlace.length !== 0) {
+                    const ship = GameHandler.shipsToPlace[0];
+                    const shipLength = ship.length;
+
+                    if (isVertical) {
+                        for (let i = 0; i < shipLength; i++) {
+                            const tempTile = startingBoard.querySelector(
+                                `[data-x="${x}"][data-y="${y + i}"]`
+                            );
+
+                            if (tempTile) {
+                                tempTile.classList.add("starting-hover");
+                                hoveredOverTiles.push(tempTile);
+                            }
+                        }
+                    } else {
+                        //Horizontal
+                        for (let i = 0; i < shipLength; i++) {
+                            const tempTile = startingBoard.querySelector(
+                                `[data-x="${x + i}"][data-y="${y}"]`
+                            );
+
+                            if (tempTile) {
+                                tempTile.classList.add("starting-hover");
+                                hoveredOverTiles.push(tempTile);
+                            }
+                        }
+                    }
+                }
+            });
+
+            tile.addEventListener("mouseleave", (e) => {
+                while (hoveredOverTiles.length > 0) {
+                    hoveredOverTiles[0].classList.toggle("starting-hover");
+                    hoveredOverTiles.shift();
+                }
+            });
+        }
+    }
+
+    static #populateBoard(personGameGrid) {
         for (let i = 0; i < 100; i++) {
             const xCoord = i % 10;
             const yCoord = Math.floor(i / 10);

@@ -88,6 +88,14 @@ footer{
     background-color: gray;
 }
 
+.tile.starting-hover{
+    background-color: lightgreen;
+}
+
+.tile.starting-hover-false:hover{
+    background-color: darkred;
+}
+
 #person-wins-container{
     background-color: var(--overlay-color);
     position: fixed;
@@ -186,7 +194,7 @@ footer{
 
 
 #player-grid-selection h2,
-#ship-selection h2{
+#ships-title-container{
     margin-bottom: 16px;
 }
 
@@ -209,23 +217,44 @@ footer{
     border: 2px solid black;
     outline: 4px solid gray;
 
+    padding: 8px;
+
     display: grid;
+    gap: 8px;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(5, 1fr);
 }
 
 .ship{
     border: 1px solid black;
+    border-radius: 12px;
     display: grid;
+    justify-items: center;
+    align-items: center;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: 1fr;
-}
-
-.ship:hover{
-    background-color: lightblue;
 }
 
 
 .ship-dot{
     border: 1px solid black;
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+    background-color: red;
+}
+
+.ship-dot.empty{
+    background-color: transparent;
+    border: none;
+}
+
+.ship:hover .ship-dot:not(.empty){
+    background: lightblue;
+}
+
+#ships-title-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }

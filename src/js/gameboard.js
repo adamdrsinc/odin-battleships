@@ -15,12 +15,21 @@ export default class Gameboard {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
 
-    #ships = [new Ship(5), new Ship(4), new Ship(3), new Ship(3), new Ship(2)];
+    #ships = [];
 
-    constructor() {
-        for (const ship of this.#ships) {
-            this.#attemptToAddShip(ship);
-        }
+    constructor(setupBoard) {
+        if (setupBoard) {
+            this.#ships = [
+                new Ship(5),
+                new Ship(4),
+                new Ship(3),
+                new Ship(3),
+                new Ship(2),
+            ];
+            for (const ship of this.#ships) {
+                this.#attemptToAddShip(ship);
+            }
+        } 
     }
 
     #attemptToAddShip(ship) {
