@@ -1,3 +1,8 @@
+@font-face{
+    font-family: "norse-bold";
+    src: url(../resource/font/Norse-Bold.otf);
+}
+
 *{
     padding: 0;
     margin: 0;
@@ -18,11 +23,46 @@ footer{
 }
 
 header{
-    min-height: 10vh;
+    --header-height: 10vh;
+
+    height: var(--header-height);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+header .logo{
+    max-height: calc(var(--header-height) - 1vh);
+}
+
+.header-title{
+    font-family: "norse-bold", sans-serif;
+    font-size: 4.5rem;
 }
 
 footer{
-    min-height: 15vh;
+    height: 15vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+}
+
+footer h2{
+    font-size: 3.5rem;
+    font-family: "norse-bold", sans-serif;
+}
+
+.personal-image-link{
+    max-height: 8vh;
+    cursor: pointer;
+}
+
+.personal-image-link:hover{
+    opacity: 0.7;
 }
 
 #main{
