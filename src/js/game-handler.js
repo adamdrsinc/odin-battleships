@@ -19,9 +19,30 @@ export class GameHandler {
     }
 
     static reset() {
+        //Remove win visibility
         document
             .getElementById("person-wins-container")
-            .classList.toggle("visible");
+            .classList.remove("visible");
+
+        //Reset ships
+        this.#shipsToPlace = [
+            new Ship(5),
+            new Ship(4),
+            new Ship(3),
+            new Ship(3),
+            new Ship(2),
+        ];
+
+        //Reset players
+        this.#player = new Player("Player", false);
+        this.#computer = new Player("Computer", true);
+
+        //Reset starting ship graphics
+        const allDone = document.querySelectorAll(`[done="true"]`);
+        for (const ship of allDone) {
+            ship.setAttribute("done", "false");
+            ship.classList.remove("done");
+        }
     }
 
     static get player() {
@@ -211,7 +232,9 @@ export class GameHandler {
     }
 
     static #displayWin(playerName) {
-        document.getElementById("player-win-name").innerText = playerName;
+        document.getElementById(
+            "player-win-name"
+        ).innerHTML = `${playerName} wins!`;
         document
             .getElementById("person-wins-container")
             .classList.toggle("visible");
