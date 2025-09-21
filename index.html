@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="shortcut icon"
+            href="4f0f495b2f256748749f.png"
+            type="image/x-icon"
+        />
+        <title>Odin battleship</title>
+    <script defer src="main.js"></script></head>
+    <body>
+        <header>
+            <img
+                src="4f0f495b2f256748749f.png"
+                alt="The Odin Project logo."
+                class="logo"
+            />
+            <h1 class="header-title">Odin Battleship</h1>
+        </header>
+        <div id="main">
+            <div id="games-container">
+                <div class="game">
+                    <h2>Player</h2>
+                    <div class="game-grid" data-player-name="Player"></div>
+                </div>
+                <div class="game">
+                    <h2>Computer</h2>
+                    <div class="game-grid" data-player-name="Computer"></div>
+                </div>
+            </div>
+            <div class="overlay">
+                <div id="player-grid-selection-container">
+                    <div id="player-grid-selection-top">
+                        <div id="ship-selection">
+                            <div id="ships-title-container">
+                                <h2>Ships</h2>
+                                <label for="vertical">Vertical</label>
+                                <input
+                                    type="checkbox"
+                                    name="vertical"
+                                    id="vertical-checkbox"
+                                    checked
+                                />
+                            </div>
+                            <div id="ships-container">
+                                <div class="ship 5" done="false">
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                </div>
+                                <div class="ship 4" done="false">
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot empty"></div>
+                                </div>
+                                <div class="ship 3" done="false">
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot empty"></div>
+                                    <div class="ship-dot empty"></div>
+                                </div>
+                                <div class="ship 3" done="false">
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot empty"></div>
+                                    <div class="ship-dot empty"></div>
+                                </div>
+                                <div class="ship 2" done="false">
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot">&nbsp;</div>
+                                    <div class="ship-dot empty"></div>
+                                    <div class="ship-dot empty"></div>
+                                    <div class="ship-dot empty"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="player-grid-selection">
+                            <h2>Select Your Starting Positons</h2>
+                            <div id="selection-grid"></div>
+                        </div>
+                    </div>
+                    <button type="submit" id="start-game-button">
+                        Start Game
+                    </button>
+                </div>
+            </div>
+            <div id="person-wins-container">
+                <div id="win-box">
+                    <h2 id="player-win-name">Player Wins!</h2>
+                    <button type="submit" id="button-play-again">
+                        Play Again
+                    </button>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <h2>Made by Adam Sinclair:</h2>
+            <a href="https://github.com/adamdrsinc" target="_blank"
+                ><img
+                    src="abfab864e65445fb8d1a.png"
+                    alt="The GitHub logo."
+                    class="personal-image-link"
+                />
+            </a>
+            <a
+                href="https://www.linkedin.com/in/adamdrsinclair/"
+                target="_blank"
+                ><img
+                    src="6d58dbe88058f8dab0f9.png"
+                    alt="The LinkedIn logo."
+                    class="personal-image-link"
+                />
+            </a>
+        </footer>
+    </body>
+</html>
