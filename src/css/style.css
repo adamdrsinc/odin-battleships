@@ -40,6 +40,7 @@ header .logo{
 .header-title{
     font-family: "norse-bold", sans-serif;
     font-size: 4.5rem;
+    color: white;
 }
 
 footer{
@@ -54,6 +55,7 @@ footer{
 footer h2{
     font-size: 3.5rem;
     font-family: "norse-bold", sans-serif;
+    color: white;
 }
 
 .personal-image-link{
